@@ -3,28 +3,13 @@ using System.Text;
 
 class Program
 {
-    static string textWithRegister = "\tОднажды гуляла я по лесу. Наступила осень, листва на деревьях окрасилась в яркие цвета. Тревожно гудели птицы на озере: скоро наступят холода, пора бы уже улететь, чтобы в следующем году вернуться сюда вновь.\n\tТишину в лесу прерывали только редкие птичьи голоса и шелест ветра по сухим листам.Внезапно, я остановилась, услышав “тук-тук”. Я пошла на звук, но, как только я дошла до дерева, по котором стучал невидимый лесной барабанщик, звук раздался уже на другом стволе, словно неведимка решил поиграть со мной в догонялки.\n\t Я обошла дерево по кругу, недоумевая, кто же стал причиной шума? Запрокинув голову, я увидела, как на толстой кленовой ветке сидит дятел.Я сразу поняла, что именно он стал причиной шума и, словно по мановению волшебной палочки он застучал твердым черным клювом по коре, оглашая лес редким “тук-тук”.\n\t Мы пошли гулять с ребятами.Нам было очень весело.Мальчишки гоняли мяч. Девочки рассказывали интересные истории, читали книги и собирали цветы.ять";
+    static string textWithRegister ="\tОднажды гуляла я по лесу. Наступила осень, листва на деревьях окрасилась в яркие цвета. Тревожно гудели птицы на озере: скоро наступят холода, пора бы уже улететь, чтобы в следующем году вернуться сюда вновь.\n\tТишину в лесу прерывали только редкие птичьи голоса и шелест ветра по сухим листам.Внезапно, я остановилась, услышав “тук-тук”. Я пошла на звук, но, как только я дошла до дерева, по котором стучал невидимый лесной барабанщик, звук раздался уже на другом стволе, словно неведимка решил поиграть со мной в догонялки.\n\tЯ обошла дерево по кругу, недоумевая, кто же стал причиной шума? Запрокинув голову, я увидела, как на толстой кленовой ветке сидит дятел.Я сразу поняла, что именно он стал причиной шума и, словно по мановению волшебной палочки он застучал твердым черным клювом по коре, оглашая лес редким “тук-тук”.\n\t Мы пошли гулять с ребятами.Нам было очень весело.Мальчишки гоняли мяч. Девочки рассказывали интересные истории, читали книги и собирали цветы.ять";
     static string textNoRegister;
-    static void PrintNoFind(int startPos, int endPos)
+
+    static void PrintText(string substring, ConsoleColor color)
     {
-        for (int i = startPos; i < endPos; i++)
-        {
-            Console.Write(textWithRegister[i]);
-        }
-    }
-    static void PrintFind(int startPos, int lenght)
-    {
-        Console.BackgroundColor = ConsoleColor.Green;
-        for (int i = startPos; i < startPos + lenght; i++)
-        {
-            Console.Write(textWithRegister[i]);
-        }
-        Console.ResetColor();
-    }
-    static void PrintReplace(string replace)
-    {
-        Console.BackgroundColor = ConsoleColor.DarkYellow;
-        Console.Write(replace);
+        Console.BackgroundColor = color;
+        Console.Write(substring);
         Console.ResetColor();
     }
 
@@ -32,7 +17,7 @@ class Program
     {
         if (find.Length == 0)
         {
-            PrintNoFind(0, textWithRegister.Length);
+            PrintText(textWithRegister, ConsoleColor.Black);
             Console.WriteLine();
             return 0;
         }
@@ -51,14 +36,14 @@ class Program
                 pos = textNoRegister.IndexOf(find, pos);
             if (pos != -1)
             {
-                PrintNoFind(prePos, pos);
+                PrintText(textWithRegister.Substring(prePos,pos-prePos), ConsoleColor.Black);
                 count++;
-                PrintReplace(replacement);
+                PrintText(replacement, ConsoleColor.DarkYellow);
                 pos = pos + find.Length - 1;
 
             }
         } while (pos != -1);
-        PrintNoFind(prePos, textWithRegister.Length);
+        PrintText(textWithRegister.Substring(prePos, textWithRegister.Length - prePos), ConsoleColor.Black);
         Console.WriteLine();
         return count;
     }
@@ -66,7 +51,7 @@ class Program
     {
         if (find.Length == 0)
         {
-            PrintNoFind(0, textWithRegister.Length);
+            PrintText(textWithRegister, ConsoleColor.Black);
             Console.WriteLine();
             return 0;
         }
@@ -87,13 +72,13 @@ class Program
                     pos = textNoRegister.IndexOf(find, pos);
                 if (pos != -1)
                 {
-                    PrintNoFind(prePos, pos);
+                    PrintText(textWithRegister.Substring(prePos, pos - prePos), ConsoleColor.Black);
                     count++;
-                    PrintFind(pos, find.Length);
+                    PrintText(textWithRegister.Substring(pos, find.Length),ConsoleColor.Green);
                     pos = pos + find.Length - 1;
                 }
             } while (pos != -1);
-            PrintNoFind(prePos, textWithRegister.Length);
+            PrintText(textWithRegister.Substring(prePos, textWithRegister.Length - prePos), ConsoleColor.Black);
             Console.WriteLine();
             return count;
         }

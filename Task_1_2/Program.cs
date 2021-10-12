@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Collections.Generic;
 
 namespace ConsoleApp2
 {
@@ -20,7 +21,7 @@ namespace ConsoleApp2
             var random = new Random();
             for (int i = 0; i < lenght; i++)
             {
-                array[i] = random.Next(1, 65536);
+                array[i] = random.Next(1, 4);
             }
             return array;
         }
@@ -36,22 +37,30 @@ namespace ConsoleApp2
 
         static String GetMode(int[] arr)
         {
-            int[] helpArray = new int[65536];
+            Dictionary<int, int> valueCounts = new Dictionary<int, int>();
             int maxCount = 0;
+            int count = 0;
             for (int i = 0; i < arr.Length; i++)
             {
-                helpArray[arr[i]]++;
-            }
-            for (int i = 0; i < helpArray.Length; i++)
-            {
-                if (helpArray[i] > maxCount)
-                    maxCount = helpArray[i];
+                if (valueCounts.ContainsKey(arr[i]))
+                {
+                    valueCounts[arr[i]]++;
+                    count++;
+                }
+                else
+                {
+                    valueCounts[arr[i]] = 1;
+                    count = 1;
+                }
+                if (count > maxCount)
+                    maxCount = count;
+                    
             }
             StringBuilder sb = new StringBuilder("");
-            for (int i = 0; i < helpArray.Length; i++)
+            foreach (var valueCount in valueCounts)
             {
-                if (helpArray[i] == maxCount)
-                    sb.Append(" " + i);
+                if (valueCount.Value==maxCount)
+                    sb.Append(" " + valueCount.Key);
             }
             return sb.ToString();
         }

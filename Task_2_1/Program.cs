@@ -59,7 +59,7 @@ namespace Task_2_1
             }
             return index;
         }
-        static void PrintResult(decimal[,] result)
+        static void PrintResult(decimal[,] result,decimal[] petroleumCost, decimal[] fullCost)
         {
             decimal resultCost = 0;
             Console.WriteLine("┌──────────┬───────┬───────┬───────┬───────┬───────────┬────────────┐");
@@ -73,13 +73,12 @@ namespace Task_2_1
                 {
                     if (j < 4)
                         Console.Write($"{result[i, j],7}|");
-                    else
-                        if (j == 4)
-                        Console.Write($"{(String.Format("{0:F2}", result[i, j])),11}|");
-                    else
-                    {
-                        Console.Write($"{(String.Format("{0:F2}", result[i, j])),12}|");
-                        resultCost += result[i, j];
+                   if (j == 4)
+                        Console.Write($"{String.Format("{0:F2}", petroleumCost[i]),11}|");
+                   if (j==5)
+                   {
+                        Console.Write($"{String.Format("{0:F2}", fullCost[i]),12}|");
+                        resultCost += fullCost[i];
                     }
                 }
                 Console.WriteLine();
@@ -100,7 +99,9 @@ namespace Task_2_1
         }
         static void Algoritm(int[] AZS, int[] volume, decimal[] price, int[][] pricePathAZS)
         {
-            decimal[,] resultPrice = new decimal[6, 6];
+            decimal[,] resultPrice = new decimal[6, 4];
+            decimal[] petroleumCost = new decimal[6];
+            decimal[] fullCost = new decimal[6];
             while (!ChechEnd(AZS))
             {
                 int minIndex = GetIndexForMinValue(price);
@@ -113,8 +114,8 @@ namespace Task_2_1
                     AZS[minPriceIndex] = AZS[minPriceIndex] - minValueAZSandVolume;
                     volume[minIndex] = volume[minIndex] - minValueAZSandVolume;
                     resultPrice[minIndex, minPriceIndex] = minValueAZSandVolume;
-                    resultPrice[minIndex, 4] += minValueAZSandVolume * price[minIndex];
-                    resultPrice[minIndex, 5] += minValueAZSandVolume * price[minIndex] + pricePathAZS[minIndex][minPriceIndex];
+                    petroleumCost[minIndex] += minValueAZSandVolume * price[minIndex];
+                    fullCost[minIndex] += minValueAZSandVolume * price[minIndex] + pricePathAZS[minIndex][minPriceIndex];
 
                     if (volume[minIndex] == 0)
                     {
@@ -131,7 +132,7 @@ namespace Task_2_1
                     }
                 }
             }
-            PrintResult(resultPrice);
+            PrintResult(resultPrice, petroleumCost, fullCost);
         }
         static void Main(string[] args)
         {
